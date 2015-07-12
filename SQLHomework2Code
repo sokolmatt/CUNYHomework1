@@ -1,0 +1,73 @@
+/** Question 1 **/
+/**I struggled greatly on this problem and finally decided to try writing individual queries to help me solve this problem **/
+
+select avg(dep_delay), weather.temp from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.temp
+order by temp DESC;
+/** At first glance it seems light temperatures cause delays (!) **/
+
+select avg(dep_delay), weather.dewp from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.dewp
+order by dewp DESC;
+/** seeing no correlation between dew point levels and delays **/
+
+select avg(dep_delay), weather.humid from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.humid
+order by avg DESC;
+/** higher levels of humidity seem to cause delays **/
+
+select avg(dep_delay), weather.precip from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.precip
+order by avg DESC;
+/** no correlation is found here **/
+
+select avg(dep_delay), weather.pressure from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.pressure
+order by avg DESC;
+/** lower levels of air pressure seems to cause delays **/
+
+select avg(dep_delay), weather.visib from flights
+inner join weather
+ON flights.origin = weather.origin and flights.month = weather.month and flights.day = weather.day
+group by weather.visib
+order by avg DESC;
+/** lower levels of visibility seem to cause delays**/
+
+
+
+
+select * from weather limit 100;
+
+/** Question 2 **/
+
+select flights.tailnum, avg(dep_delay), planes.year from flights
+INNER JOIN planes
+ON flights.tailnum = planes.tailnum
+GROUP BY flights.tailnum, planes.year
+ORDER BY avg(dep_delay) DESC, year;
+
+/** By looking at the output from the above SQL statement, it does not appear that
+older planes, on average, are more likely to be delayed **/
+
+/** Question 3 **/
+/** Question, do specific models result in longer delays on average? **/
+
+create view run1 AS
+select avg(dep_delay), planes.model from flights
+INNER JOIN planes
+ON flights.tailnum = planes.tailnum
+GROUP BY flights.tailnum, planes.model
+ORDER BY avg(dep_delay), model DESC;
+
+select avg(avg), model from run1 group by model order by avg DESC;
+/** From this print out, it seems that the 737 models, on averge, are better than other model in terms of departing on time **/
