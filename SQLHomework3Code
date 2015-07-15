@@ -1,0 +1,42 @@
+/** Matthew Sokol **/
+/** Week 3 SQL Assignment **/
+/** SQL Table creation **/
+
+DROP TABLE IF EXISTS Videos;
+DROP TABLE IF EXISTS Reviewers;
+
+CREATE TABLE Videos
+(
+     uniqueID int NOT NULL,
+     Video_Title varchar NOT NULL,
+     Video_Length int NOT NULL,
+     Video_URL varchar NOT NULL
+);
+
+INSERT INTO Videos (uniqueID, Video_Title, Video_Length, Video_URL) values (1, 'How to program in HTML #1 - The Basics', 14, 'https://www.youtube.com/watch?v=PnCUhd8ef8A');
+INSERT INTO Videos (uniqueID, Video_Title, Video_Length, Video_URL) values (2, 'Learn HTML in 15 Minutes ', 15, 'https://www.youtube.com/watch?v=Ggh_y-33Eso');
+INSERT INTO Videos (uniqueID, Video_Title, Video_Length, Video_URL) values (3, 'Introduction to HTML Programming', 99, 'https://www.youtube.com/watch?v=fS7w-TXinPE');
+
+select * from Videos;
+
+CREATE TABLE Reviewers
+(
+     Reviewer_Name varchar NOT NULL,
+     Video_Rating int CHECK(0<=Video_Rating AND Video_Rating <=5),
+     Video_Review varchar NOT NULL,
+     Video_ID int NOT NULL
+);
+
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Matt', 1, 'Great!', 1);
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Matt', 2, 'Awesome, but long.', 2);
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Matt', 5, 'Super!', 3);
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Jill', 3, 'Funny and well done.', 1);
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Jill', 4, 'Just what I needed.', 2);
+INSERT INTO Reviewers (Reviewer_Name, Video_Rating, Video_Review, Video_ID) values ('Jill', 1, 'Not helpful.', 3);
+
+select * from Reviewers;
+
+select *
+from Videos
+Left Join Reviewers
+ON Videos.UniqueID = Video_ID;
